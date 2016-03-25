@@ -44,3 +44,8 @@ logstash:
       # This is the host's ip address under VirtualBox.
       hosts => ["10.0.2.2"]
     }
+
+appdeploy:
+  name: elk-example
+  log_dir: /var/log/tutorial
+  

@@ -1,5 +1,6 @@
 /.DS_Store
 /.vagrant
+/ansible/*.retry
 /elk-example-app/*.log
 /elk-example-app/bin/
 /elk-example-app/target/

@@ -1,0 +1,39 @@
+---
+
+# file: /roles/elk-example/tasks/main.yml
+
+- name: ensure home directory is present and writeable
+  file: >-
+    dest="{{ _appdeploy_combined.home_dir }}"
+    owner="{{ _appdeploy_combined.user }}"
+    group="{{ _appdeploy_combined.group }}"
+    state=directory
+  tags: deploy
+
+- name: ensure log directory is present and writeable
+  file: >-
+    dest="{{ _appdeploy_combined.log_dir }}"
+    owner="{{ _appdeploy_combined.user }}"
+    group="{{ _appdeploy_combined.group }}"
+    state=directory
+  tags: deploy
+
+- name: deploy the app on the server
+  copy: >-
+    src="{{ item }}"
+    dest="{{ _appdeploy_combined.home_dir }}"
+    owner="{{ _appdeploy_combined.user }}"
+    group="{{ _appdeploy_combined.group }}"
+  with_fileglob:
+    - "{{ playbook_dir }}/{{ _appdeploy_combined.name }}-*.jar"
+  tags: deploy
+
+- name: set log file path
+  lineinfile: >-
+    dest="{{ _appdeploy_combined.home_dir }}/application.properties"
+    create=yes
+    line="logging.file={{ _appdeploy_combined.log_dir }}/{{ _appdeploy_combined.name }}.log"
+    owner="{{ _appdeploy_combined.user }}"
+    group="{{ _appdeploy_combined.group }}"
+    state=present
+  tags: deploy

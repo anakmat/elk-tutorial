@@ -1,0 +1,13 @@
+---
+
+# Define custom settings in a dictionary called "appdeploy".
+
+_appdeploy_default:
+  name: appname
+  home_dir: /home/vagrant
+  log_dir: /var/log/appname
+  user: vagrant
+  group: vagrant
+
+# Combines default and custom settings.
+_appdeploy_combined: "{{ _appdeploy_default | combine(appdeploy) }}"

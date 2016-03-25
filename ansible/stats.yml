@@ -14,3 +14,5 @@
   roles:
     - java8
     - logstash
+    - appdeploy
+    
