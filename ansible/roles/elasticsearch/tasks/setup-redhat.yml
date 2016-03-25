@@ -1,0 +1,16 @@
+---
+- name: install prerequisites
+  yum: name={{ item }} state=installed
+  with_items:
+    - java-1.7.0-openjdk
+
+- name: create elasticsearch yum repo
+  template: src=elasticsearch.repo.j2 dest=/etc/yum.repos.d/elasticsearch.repo
+
+- name: import rpm gpg key
+  rpm_key: key=http://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
+
+- name: install elasticsearch
+  yum: name=elasticsearch state=installed
+
+- set_fact: elasticsearch_defaults_path="/etc/sysconfig/elasticsearch"

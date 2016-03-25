@@ -1,0 +1,30 @@
+---
+
+# file: /roles/java8/tasks/main.yml
+
+- name: add Java repository to sources
+  apt_repository: repo='ppa:webupd8team/java'
+  tags: java
+
+- name: autoaccept license for Java
+  debconf: name='oracle-java8-installer' question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
+  tags: java
+
+- name: update APT package cache
+  apt: update_cache=yes
+  tags: java
+
+- name: install Java 8
+  apt: name=oracle-java8-installer state=latest install_recommends=yes
+  tags: java
+
+- name: set default environment variable
+  apt: name=oracle-java8-set-default
+  tags: java
+
+- name: change JVM default encrypt policy
+  copy: src={{item}} dest=/usr/lib/jvm/java-8-oracle/jre/lib/security
+  with_items:
+    - local_policy.jar
+    - US_export_policy.jar
+  tags: java

@@ -1,0 +1,32 @@
+---
+
+# Define custom settings in a dictionary called "kibana".
+
+_kibana_default:
+  version: "{{ _kibana_version }}"
+  apt_repo: "deb http://packages.elasticsearch.org/kibana/{{ _kibana_version }}/debian stable main"
+  repo_key: "http://packages.elasticsearch.org/GPG-KEY-elasticsearch"
+
+  user: kibana
+  group: kibana
+  host: "0.0.0.0"
+  port: 5601
+  index: ".kibana"
+  elasticsearch: "http://localhost:9200"
+  elasticsearch_user: ""
+  elasticsearch_password: ""
+  ssl_verify: false
+  ssl_ca: ""
+  ssl_key_file: ""
+  ssl_cert_file: ""
+
+
+  dir: "/opt/kibana"
+  log: /var/log/kibana.log
+  log_rotate_count: 5
+  log_rotate_interval: daily
+
+# Required to avoid recursive reference within dictionary.
+_kibana_version: "{{ kibana.version | default(4.4) }}"
+
+_kibana_combined: "{{ _kibana_default | combine(kibana) }}"

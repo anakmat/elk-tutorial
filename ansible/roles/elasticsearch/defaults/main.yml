@@ -1,0 +1,38 @@
+---
+
+# Define custom settings in a dictionary called "elasticsearch".
+
+_es_default:
+  version: 2.2.0
+  user: elasticsearch
+  group: elasticsearch
+  nofile: 32000
+  cluster_name: ""
+  node_name: "{{ ansible_fqdn }}"
+  is_node_master: yes
+  is_node_data: yes
+  index_number_of_shards: 5
+  index_number_of_replicas: 1
+  bootstrap_mlockall: yes
+  network_host: _local_
+  http_host: _local_
+  minimum_master_nodes: 1
+
+  java_opts: ""
+  # Taken from rack-roles elasticsearch:
+  #   Use 40% of memory for heap, ES will also use large amount of
+  #   direct memory allocation, hopefully ending with a total around 50%
+  #   of the whole available system memory.
+  java_heap_size: "{{ (ansible_memtotal_mb * 0.4) | round | int }}m"
+
+  path_conf: /etc/elasticsearch
+  path_data: /var/lib/elasticsearch
+  path_home: /usr/share/elasticsearch
+  path_logs: /var/log/elasticsearch
+  path_plugins: /usr/share/elasticsearch/plugins
+  plugins:
+    - { name: paramedic, path: karmi/elasticsearch-paramedic }
+    - { name: head, path: mobz/elasticsearch-head}
+
+# Combines default and custom settings.
+_es_combined: "{{ _es_default | combine(elasticsearch) }}"

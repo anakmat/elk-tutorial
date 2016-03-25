@@ -1,0 +1,22 @@
+---
+
+# ElasticSearch
+
+elasticsearch:
+  version: 2.2.0
+  cluster_name: "tutorial-stats"
+  index_number_of_shards: 1
+  index_number_of_replicas: 1
+  minimum_master_nodes: 1
+  # TODO: This service should be secured behind an HTTP reverse proxy.
+  network_host: "0.0.0.0"
+  http_host: "0.0.0.0"
+  plugins:
+    - { name: "kopf", path: "lmenezes/elasticsearch-kopf/2.0" }
+
+# Kibana
+
+kibana:
+  version: 4.4
+  plugins:
+    - {name: kibana/timelion, shortname: timelion }

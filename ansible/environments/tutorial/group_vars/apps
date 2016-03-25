@@ -1,0 +1,46 @@
+---
+
+# Logstash
+
+logstash:
+  inputs: |-
+    file {
+      type => "java"
+      path => ["/var/log/tutorial/*.log"]
+      codec => multiline {
+        pattern => "^%{TIMESTAMP_ISO8601}"
+        negate => "true"
+        what => "previous"
+      }
+      sincedb_path => ["/var/lib/logstash/sincedb"]
+      start_position => "beginning"
+    }
+
+  filters: |-
+    grok {
+      match => {
+        "message" =>
+        "^%{TIMESTAMP_ISO8601:timestamp}\s+%{LOGLEVEL:level}\s+%{NUMBER:pid}\s+---\s+\[\s*%{USERNAME:thread}\s*\]\s+%{JAVAFILE:class}\s*:\s*%{DATA:themessage}(?:\n+(?<stacktrace>(?:.|\r|\n)+))?$"
+               }
+    }
+    date {
+      match => [ "timestamp" , "yyyy-MM-dd HH:mm:ss.SSS" ]
+    }
+    mutate {
+      rename => {
+        "themessage" => "message"
+      }
+      add_field => {
+        "appid" => "%{path}"
+      }
+    }
+    mutate {
+      gsub => [ "appid", "^.+/([^.]+)\..+$", "\1" ]
+    }
+
+  outputs: |-
+    elasticsearch {
+      index => "logstash-%{+YYYY.MM}"
+      # This is the host's ip address under VirtualBox.
+      hosts => ["10.0.2.2"]
+    }

@@ -1,0 +1,16 @@
+---
+
+- hosts: stats
+  sudo: yes
+  gather_facts: yes
+  roles:
+    - java8
+    - elasticsearch
+    - kibana
+
+- hosts: apps
+  sudo: yes
+  gather_facts: yes
+  roles:
+    - java8
+    - logstash

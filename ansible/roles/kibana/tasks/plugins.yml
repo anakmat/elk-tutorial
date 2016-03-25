@@ -1,0 +1,11 @@
+---
+
+- name: Removing Plugins if they exist
+  command: "{{ _kibana_combined.dir }}/bin/kibana plugin --remove {{ item.shortname }}"
+  with_items: "{{ _kibana_combined.plugins }}"
+  ignore_errors: yes
+
+- name: Installing Plugins
+  command: "{{ _kibana_combined.dir }}/bin/kibana plugin --install {{ item.name }}"
+  with_items: "{{ _kibana_combined.plugins }}"
+  ignore_errors: yes

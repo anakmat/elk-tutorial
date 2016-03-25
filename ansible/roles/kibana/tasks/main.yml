@@ -1,0 +1,51 @@
+---
+
+- include: install_debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Configure Kibana
+  template: >-
+    src=kibana.yml.j2
+    dest={{ _kibana_combined.dir }}/config/kibana.yml
+  notify:
+     - Restart Kibana
+
+- include: plugins.yml
+  tags:
+   - kibana_plugins
+  when: (_kibana_combined.plugins is defined)
+  notify:
+     - Restart Kibana
+
+- name: set plugin permissions
+  file: >
+    path={{ _kibana_combined.dir }}/optimize
+    owner={{ _kibana_combined.user }}
+    group={{ _kibana_combined.group }}
+    recurse=yes
+    state=directory
+
+- name: configure Kibana service definition
+  template: >-
+    src=kibana.conf.j2
+    dest=/etc/init/kibana.conf
+  notify:
+    - Restart Kibana
+
+- name: remove obsolete service control script
+  file: >
+    path=/etc/init.d/kibana
+    state=absent
+
+- name: set log file permissions
+  file: >
+    path={{ _kibana_combined.log }}
+    owner={{ _kibana_combined.user }}
+    group={{ _kibana_combined.group }}
+    mode=0644
+    state=touch
+
+- name: configure Kibana log rotation
+  template: >
+    src=logrotate_kibana.j2
+    dest=/etc/logrotate.d/kibana

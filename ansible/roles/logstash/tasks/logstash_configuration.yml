@@ -1,0 +1,40 @@
+---
+
+- name: Copy Logstash Input Configuration
+  template: >-
+    src=input.conf.j2
+    dest={{ _logstash_combined.conf_dir }}/00-ansible-gen-input.conf
+    owner=root
+    group=root
+    mode=0644
+  notify:
+    - restart logstash
+  tags: logstash_inputs
+  when: _logstash_combined.inputs
+
+- name: Copy Logstash Filter Configuration
+  template: >-
+    src=filters.conf.j2
+    dest={{ _logstash_combined.conf_dir }}/51-ansible-gen-filters.conf
+    owner=root
+    group=root
+    mode=0644
+  notify:
+    - restart logstash
+  tags: logstash_filters
+  when: _logstash_combined.filters
+
+- name: Copy Logstash Output Configuration
+  template: >-
+    src=output.conf.j2
+    dest={{ _logstash_combined.conf_dir }}/99-ansible-gen-output.conf
+    owner=root
+    group=root
+    mode=0644
+  notify:
+    - restart logstash
+  tags: logstash_outputs
+  when: _logstash_combined.outputs
+
+- name: Validate Logstash Configuration
+  command: "{{ _logstash_combined.home_dir }}/bin/logstash agent -t -f {{ _logstash_combined.conf_dir }}"

@@ -1,0 +1,31 @@
+---
+
+# Define custom settings in a dictionary called "logstash".
+
+_logstash_default:
+  version: "{{ _logstash_version }}"
+  apt_repo: "deb http://packages.elasticsearch.org/logstash/{{ _logstash_version }}/debian stable main"
+  repo_key: "http://packages.elasticsearch.org/GPG-KEY-elasticsearch"
+  yum_repo_dest: "/etc/yum.repos.d/logstash.repo"
+
+  inputs: ""
+  filters: ""
+  outputs: ""
+
+  conf_dir: "/etc/logstash/conf.d/"
+  home_dir: "/opt/logstash/"
+
+  options: ""
+  user: "logstash"
+  group: "logstash"
+
+# Required to avoid recursive reference within dictionary.
+_logstash_version: "{{ logstash.version | default(2.2) }}"
+
+_logstash_combined: "{{ _logstash_default | combine(logstash) }}"
+
+_logstash_python_utils:
+  - { package: "python-pycurl" }
+  - { package: "python-apt" }
+_logstash_redhat_default: "/etc/sysconfig/logstash"
+_logstash_debian_default: "/etc/default/logstash"

@@ -1,0 +1,10 @@
+description "kibana"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on shutdown
+
+respawn
+setuid kibana
+chdir {{ _kibana_combined.dir }}
+
+exec ./bin/kibana >> {{ _kibana_combined.log }} 2>&1
