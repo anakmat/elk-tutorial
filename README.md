@@ -1,8 +1,16 @@
 # elk-tutorial
-Configuration files and Spring Boot example app to test Elasticsearch, Logstash and Kibana (ELK).
 
-These config files allow for easy setup of an ELK deployment with Vagrant and Ansible.
+## About
 
-The app's only purpose is to generate log events which are then read by Logstash, analyzed and forwarded to Elasticsearch so that they can be later displayed on Kibana.
+This repository is part of a (not-yet-released) tutorial about Elasticsearch, Logstash and Kibana (ELK).
+It contains all the required configuration files and a Spring Boot example app to deploy and test the platform.
+
+The config files allow for an easy setup on two VirtualBox machines with Vagrant and Ansible.
+
+The app's only purpose is to generate log events which are read by Logstash and then analyzed and forwarded to Elasticsearch so that they can be later displayed on Kibana.
+
+## License
+
+All source code is released under the MIT license.
 
 Feel free to use the Ansible roles for your own deployments; they are quite flexible.
