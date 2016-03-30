@@ -18,8 +18,6 @@
     state=latest
   tags: logstash_install
 
-- debug: var=logstash_defaults
-
 - name: Configure default settings for Logstash (Debian only. Upstart on Ubuntu won't be touched)
   template: >-
     src=defaults.conf.j2
