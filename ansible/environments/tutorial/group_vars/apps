@@ -31,7 +31,7 @@ logstash:
         "themessage" => "message"
       }
       add_field => {
-        "appid" => "%{path}"
+        "appid" => "%{[path]}"
       }
     }
     mutate {
@@ -48,4 +48,3 @@ logstash:
 appdeploy:
   name: elk-example
   log_dir: /var/log/tutorial
-  
