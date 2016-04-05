@@ -92,11 +92,26 @@ bootstrap.mlockall: false
 #
 # Set the bind address to a specific IP (IPv4 or IPv6):
 #
+http.host: "{{ _es_combined.http_host }}"
 network.host: "{{ _es_combined.network_host }}"
 #
-# Set a custom port for HTTP:
+# Allow for reverse proxy configuration:
 #
-http.host: "{{ _es_combined.http_host }}"
+{% if _es_combined.http_publish_host %}
+http.publish_host: "{{ _es_combined.http_publish_host }}"
+{% endif %}
+
+{% if _es_combined.http_publish_port %}
+http.publish_port: {{ _es_combined.http_publish_port }}
+{% endif %}
+
+{% if _es_combined.transport_publish_host %}
+transport.publish_host: "{{ _es_combined.transport_publish_host }}"
+{% endif %}
+
+{% if _es_combined.transport_publish_port %}
+transport.publish_port: {{ _es_combined.transport_publish_port }}
+{% endif %}
 #
 # For more information, see the documentation at:
 # <http://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html>
@@ -106,7 +121,11 @@ http.host: "{{ _es_combined.http_host }}"
 # Pass an initial list of hosts to perform discovery when new node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
+{% if _es_combined.unicast_nodes %}
+discovery.zen.ping.unicast.hosts: ["{{ _es_combined.unicast_nodes | join('", "') }}"]
+{% else %}
 # discovery.zen.ping.unicast.hosts: ["host1", "host2"]
+{% endif %}
 #
 # Prevent the "split brain" by configuring the majority of nodes (total number of nodes / 2 + 1):
 #

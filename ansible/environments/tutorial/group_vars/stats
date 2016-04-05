@@ -8,9 +8,13 @@ elasticsearch:
   index_number_of_shards: 1
   index_number_of_replicas: 1
   minimum_master_nodes: 1
-  # TODO: This service should be secured behind an HTTP reverse proxy.
-  network_host: "0.0.0.0"
   http_host: "0.0.0.0"
+  network_host: "0.0.0.0"
+  http_publish_host: "10.0.2.2"
+  http_publish_port: "{{ es_http_port }}"
+  transport_publish_host: "10.0.2.2"
+  transport_publish_port: "{{ es_transport_port }}"
+  unicast_nodes: "{{ es_unicast_nodes }}"
   plugins:
     - { name: "kopf", path: "lmenezes/elasticsearch-kopf/2.0" }
 

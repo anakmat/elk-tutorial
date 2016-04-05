@@ -72,26 +72,43 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
-  config.vm.define "statsserver" do |stats|
-    stats.vm.hostname = "statsserver"
-    stats.vm.network "forwarded_port", guest: 22, host: 2223, id: "ssh"
-    stats.vm.network "forwarded_port", guest: 5601, host: 5601
-    stats.vm.network "forwarded_port", guest: 9200, host: 9200
-    stats.vm.network "forwarded_port", guest: 9300, host: 9300
-    stats.vm.provision "ansible" do |ansible|
-      ansible.inventory_path = "ansible/environments/tutorial/inventory"
-      ansible.verbose = "vvv"
-      ansible.playbook = "ansible/stats.yml"
-    end
-  end
+  servers = ["appsserver", "statsserver", "supportserver"]
+  ssh_ports = [2223, 2224, 2225]
+  kibana_ports = [0, 5601, 5602]
+  es_http_ports = [0, 9200, 9201]
+  es_transport_ports = [0, 9300, 9301]
 
-  config.vm.define "appsserver" do |apps|
-    apps.vm.hostname = "appsserver"
-    apps.vm.network "forwarded_port", guest: 22, host: 2224, id: "ssh"
-    apps.vm.provision "ansible" do |ansible|
-      ansible.inventory_path = "ansible/environments/tutorial/inventory"
-      ansible.verbose = "vvv"
-      ansible.playbook = "ansible/stats.yml"
+  (0..servers.length - 1).each do |i|
+    servername = servers[i]
+    ssh_port = ssh_ports[i]
+    kibana_port = kibana_ports[i]
+    es_http_port = es_http_ports[i]
+    es_transport_port = es_transport_ports[i]
+
+    config.vm.define servername do |server|
+      server.vm.hostname = servername
+      server.vm.network "forwarded_port", guest: 22, host: ssh_port, id: "ssh"
+      if kibana_port != 0
+        server.vm.network "forwarded_port", guest: 5601, host: kibana_port
+      end
+      if es_http_port != 0
+        server.vm.network "forwarded_port", guest: 9200, host: es_http_port
+      end
+      if es_transport_port != 0
+        server.vm.network "forwarded_port", guest: 9300, host: es_transport_port
+      end
+      server.vm.provision "ansible" do |ansible|
+        ansible.extra_vars = {
+          ansible_host: "127.0.0.1",
+          ansible_port: ssh_port,
+          es_http_port: es_http_port,
+          es_transport_port: es_transport_port,
+          es_unicast_nodes: es_transport_ports.map{ |p| "10.0.2.2:#{p}" if p != 0 }.compact
+        }
+        ansible.inventory_path = "ansible/environments/tutorial/inventory"
+        ansible.verbose = "vvv"
+        ansible.playbook = "ansible/stats.yml"
+      end
     end
   end
 end

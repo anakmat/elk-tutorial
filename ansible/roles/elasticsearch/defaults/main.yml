@@ -14,8 +14,14 @@ _es_default:
   index_number_of_shards: 5
   index_number_of_replicas: 1
   bootstrap_mlockall: yes
-  network_host: _local_
   http_host: _local_
+  network_host: _local_
+  http_publish_host: ""
+  http_publish_port: 0
+  transport_publish_host: ""
+  transport_publish_port: 0
+
+  unicast_nodes: []
   minimum_master_nodes: 1
 
   java_opts: ""
@@ -31,7 +37,6 @@ _es_default:
   path_logs: /var/log/elasticsearch
   path_plugins: /usr/share/elasticsearch/plugins
   plugins:
-    - { name: paramedic, path: karmi/elasticsearch-paramedic }
     - { name: head, path: mobz/elasticsearch-head}
 
 # Combines default and custom settings.
