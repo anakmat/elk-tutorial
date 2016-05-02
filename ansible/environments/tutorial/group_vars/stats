@@ -17,6 +17,7 @@ elasticsearch:
   unicast_nodes: "{{ es_unicast_nodes }}"
   plugins:
     - { name: "kopf", path: "lmenezes/elasticsearch-kopf/2.0" }
+    - { name: "hq", path: "royrusso/elasticsearch-HQ" }
 
 # Kibana
 
