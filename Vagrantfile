@@ -72,11 +72,11 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get update
   #   sudo apt-get install -y apache2
   # SHELL
-  servers = ["appsserver", "statsserver", "supportserver"]
-  ssh_ports = [2223, 2224, 2225]
-  kibana_ports = [0, 5601, 5602]
-  es_http_ports = [0, 9200, 9201]
-  es_transport_ports = [0, 9300, 9301]
+  servers = ["appsserver", "statsserver"]
+  ssh_ports = [2223, 2224]
+  kibana_ports = [0, 5601]
+  es_http_ports = [0, 9200]
+  es_transport_ports = [0, 9300]
 
   (0..servers.length - 1).each do |i|
     servername = servers[i]
