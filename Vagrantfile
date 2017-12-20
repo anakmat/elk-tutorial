@@ -53,10 +53,6 @@ Vagrant.configure(2) do |config|
   #
   # View the documentation for the provider you are using for more
   # information on available options.
-  config.vm.provider "virtualbox" do |vb|
-      vb.memory = "2560"
-      vb.cpus = "2"
-  end
 
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
   # such as FTP and Heroku are also available. See the documentation at
@@ -73,6 +69,8 @@ Vagrant.configure(2) do |config|
   #   sudo apt-get install -y apache2
   # SHELL
   servers = ["appsserver", "statsserver"]
+  memories = [2048, 8192]
+  cpus = [2, 2]
   ssh_ports = [2223, 2224]
   kibana_ports = [0, 5601]
   es_http_ports = [0, 9200]
@@ -80,10 +78,17 @@ Vagrant.configure(2) do |config|
 
   (0..servers.length - 1).each do |i|
     servername = servers[i]
+    memory = memories[i]
+    cpu = cpus[i]
     ssh_port = ssh_ports[i]
     kibana_port = kibana_ports[i]
     es_http_port = es_http_ports[i]
     es_transport_port = es_transport_ports[i]
+
+    config.vm.provider "virtualbox" do |vb|
+        vb.memory = memory
+        vb.cpus = cpu
+    end
 
     config.vm.define servername do |server|
       server.vm.hostname = servername

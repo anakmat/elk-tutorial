@@ -3,7 +3,7 @@
 # ElasticSearch
 
 elasticsearch:
-  version: 2.2.0
+  version: 2.x
   cluster_name: "tutorial-stats"
   index_number_of_shards: 1
   index_number_of_replicas: 1
@@ -21,6 +21,6 @@ elasticsearch:
 # Kibana
 
 kibana:
-  version: 4.4
+  version: 4.6
   plugins:
     - {name: kibana/timelion, shortname: timelion }

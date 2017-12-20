@@ -4,8 +4,8 @@
 
 _kibana_default:
   version: "{{ _kibana_version }}"
-  apt_repo: "deb http://packages.elasticsearch.org/kibana/{{ _kibana_version }}/debian stable main"
-  repo_key: "http://packages.elasticsearch.org/GPG-KEY-elasticsearch"
+  apt_repo: "deb https://packages.elastic.co/kibana/{{ _kibana_version }}/debian stable main"
+  repo_key: "https://packages.elastic.co/GPG-KEY-elasticsearch"
 
   user: kibana
   group: kibana

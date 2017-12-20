@@ -4,8 +4,8 @@
 
 _logstash_default:
   version: "{{ _logstash_version }}"
-  apt_repo: "deb http://packages.elasticsearch.org/logstash/{{ _logstash_version }}/debian stable main"
-  repo_key: "http://packages.elasticsearch.org/GPG-KEY-elasticsearch"
+  apt_repo: "deb https://packages.elastic.co/logstash/{{ _logstash_version }}/debian stable main"
+  repo_key: "https://packages.elastic.co/GPG-KEY-elasticsearch"
   yum_repo_dest: "/etc/yum.repos.d/logstash.repo"
 
   inputs: ""
