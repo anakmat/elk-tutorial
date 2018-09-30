@@ -2,7 +2,7 @@
 
 ## About
 
-This repository is part of a (not-yet-released) tutorial about Elasticsearch, Logstash and Kibana (ELK).
+This repository is part of a tutorial about [Elasticsearch, Logstash and Kibana](https://www.adictosaltrabajo.com/tutoriales/monitorizacion-de-logs-con-elasticsearch-logstash-y-kibana/).
 It contains all the required configuration files and a Spring Boot example app to deploy and test the platform.
 
 The config files allow for an easy setup on two VirtualBox machines with Vagrant and Ansible.
